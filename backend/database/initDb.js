@@ -1,10 +1,16 @@
-const Database = require('better-sqlite3');
+const fs = require('fs');
 const path = require('path');
+const Database = require('better-sqlite3');
 
-const dbPath = process.env.DATABASE_PATH || 
-  (process.env.NODE_ENV === 'production' 
-    ? '/var/data/lostify.db' 
+const dbPath = process.env.DATABASE_PATH ||
+  (process.env.NODE_ENV === 'production'
+    ? path.join(__dirname, 'lostify.db')
     : path.join(__dirname, 'lostify.db'));
+
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
 
 const db = new Database(dbPath);
 
