@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { authMiddleware, adminMiddleware } = require('../utils/auth');
-const db = require('../utils/db');
+const { settingsDb } = require('../database/db');
 
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/', authMiddleware, (req, res) => {
   try {
-    const settings = await db.get(`settings:${req.user.id}`);
+    const settings = settingsDb.getUserSettings(req.user.id);
     res.json(settings || {
       defaultPostType: 'lost',
       contactVisibility: 'public',
-      whatsappPrefix: true,
-      autoResolve: false,
+      whatsappPrefix: 1,
+      autoResolve: 0,
     });
   } catch (error) {
     console.error('Get settings error:', error);
@@ -18,10 +18,9 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-router.put('/', authMiddleware, async (req, res) => {
+router.put('/', authMiddleware, (req, res) => {
   try {
-    const settings = req.body;
-    await db.set(`settings:${req.user.id}`, settings);
+    const settings = settingsDb.setUserSettings(req.user.id, req.body);
     res.json({ message: 'Settings saved successfully', settings });
   } catch (error) {
     console.error('Save settings error:', error);
@@ -29,12 +28,12 @@ router.put('/', authMiddleware, async (req, res) => {
   }
 });
 
-router.get('/admin', authMiddleware, adminMiddleware, async (req, res) => {
+router.get('/admin', authMiddleware, adminMiddleware, (req, res) => {
   try {
-    const adminSettings = await db.get('admin:settings');
+    const adminSettings = settingsDb.getAdminSettings();
     res.json(adminSettings || {
       moderationThreshold: 3,
-      manualApproval: false,
+      requireManualApproval: 0,
       announcementBanner: '',
     });
   } catch (error) {
@@ -43,10 +42,9 @@ router.get('/admin', authMiddleware, adminMiddleware, async (req, res) => {
   }
 });
 
-router.put('/admin', authMiddleware, adminMiddleware, async (req, res) => {
+router.put('/admin', authMiddleware, adminMiddleware, (req, res) => {
   try {
-    const adminSettings = req.body;
-    await db.set('admin:settings', adminSettings);
+    const adminSettings = settingsDb.setAdminSettings(req.body);
     res.json({ message: 'Admin settings saved successfully', adminSettings });
   } catch (error) {
     console.error('Save admin settings error:', error);
