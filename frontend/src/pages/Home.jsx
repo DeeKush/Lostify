@@ -68,7 +68,7 @@ export default function Home() {
             >
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
-                  to={user ? '/create' : '/signup'}
+                  to={user ? '/create' : '/login'}
                   className="bg-lost text-white px-8 py-4 rounded-lg text-lg font-heading font-semibold hover:bg-lost/90 transition-all duration-300 shadow-lg hover:shadow-xl inline-block"
                 >
                   Report Lost Item
@@ -76,7 +76,7 @@ export default function Home() {
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
-                  to={user ? '/create' : '/signup'}
+                  to={user ? '/create' : '/login'}
                   className="bg-accent text-navy px-8 py-4 rounded-lg text-lg font-heading font-semibold hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl inline-block"
                 >
                   Report Found Item
@@ -253,10 +253,10 @@ export default function Home() {
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                to="/signup"
+                to="/login"
                 className="bg-accent text-navy px-8 py-4 rounded-lg text-lg font-heading font-semibold hover:bg-accent/90 transition-all shadow-lg hover:shadow-xl inline-block"
               >
-                Sign Up with SST Email
+                Sign In with SST Google Account
               </Link>
             </motion.div>
           </motion.div>
