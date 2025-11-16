@@ -241,9 +241,9 @@ router.get('/:id', async (req, res) => {
 
 router.post('/create', authMiddleware, async (req, res) => {
   try {
-    const { title, description, type, category, location, date, contactNumber, imageURL } = req.body;
+    const { title, description, type, category, location, date, contactInfo, imageURL } = req.body;
     
-    if (!title || !type || !category || !location || !contactNumber) {
+    if (!title || !type || !category || !location || !contactInfo) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
     
@@ -268,7 +268,7 @@ router.post('/create', authMiddleware, async (req, res) => {
       category,
       location,
       date: date || new Date().toISOString(),
-      contactNumber,
+      contactInfo,
       imageURL: imageURL || null,
       user: req.user.username
     };

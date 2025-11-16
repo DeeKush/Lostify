@@ -13,7 +13,7 @@ export default function CreatePost() {
     category: '',
     location: '',
     date: '',
-    contactNumber: '',
+    contactInfo: '',
     imageURL: ''
   });
   const [imageFile, setImageFile] = useState(null);
@@ -208,7 +208,7 @@ export default function CreatePost() {
           <input
             type="tel"
             name="contactNumber"
-            value={formData.contactNumber}
+            value={formData.contactInfo}
             onChange={handleChange}
             className="input-field"
             required
