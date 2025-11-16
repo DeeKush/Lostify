@@ -216,26 +216,18 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-block"
+              >
                 <Link
                   to="/login"
-                  className="text-white hover:text-accent transition-colors font-medium text-sm"
+                  className="bg-accent text-navy px-4 py-2 rounded-lg font-heading font-semibold hover:bg-accent/90 transition-all shadow-md hover:shadow-lg inline-block text-sm"
                 >
-                  Login
+                  Sign In
                 </Link>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-block"
-                >
-                  <Link
-                    to="/signup"
-                    className="bg-accent text-navy px-4 py-2 rounded-lg font-heading font-semibold hover:bg-accent/90 transition-all shadow-md hover:shadow-lg inline-block text-sm"
-                  >
-                    Sign Up
-                  </Link>
-                </motion.div>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>

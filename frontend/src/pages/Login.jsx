@@ -14,7 +14,7 @@ export default function Login() {
   const { loginAdmin, googleLogin } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleAdminSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -35,7 +35,7 @@ export default function Login() {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       await googleLogin(credentialResponse.credential);
-      toast.success('Login successful!');
+      toast.success('Welcome to Lostify!');
       navigate('/dashboard');
     } catch (err) {
       const errorMsg = err.response?.data?.error || 'Login failed';
@@ -59,8 +59,13 @@ export default function Login() {
             />
           </div>
           <h2 className="text-3xl font-heading font-bold text-charcoal dark:text-white">
-            Sign in to your account
+            Welcome to Lostify
           </h2>
+          <p className="mt-2 text-sm text-charcoal/60 dark:text-white/60">
+            {activeTab === 'user' 
+              ? 'Sign in with your SST Google account' 
+              : 'Admin portal access'}
+          </p>
         </div>
 
         <div className="card p-6">
@@ -73,7 +78,7 @@ export default function Login() {
                   : 'text-charcoal/60 dark:text-white/60 hover:text-charcoal dark:hover:text-white'
               }`}
             >
-              User Login
+              Student Login
             </button>
             <button
               onClick={() => setActiveTab('admin')}
@@ -87,79 +92,78 @@ export default function Login() {
             </button>
           </div>
 
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            {error && (
-              <div className="bg-lost/10 border border-lost text-lost px-4 py-3 rounded-lg">
-                {error}
+          {activeTab === 'user' ? (
+            <div className="space-y-6">
+              <div className="flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  text="signin_with"
+                  theme="outline"
+                  size="large"
+                  width="100%"
+                />
               </div>
-            )}
-            
-            <div>
-              <input
-                type="text"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="input-field"
-                placeholder="Username"
-              />
+
+              <p className="text-sm text-center text-charcoal/60 dark:text-white/60">
+                Only @sst.scaler.com email addresses are allowed
+              </p>
+
+              <p className="text-xs text-center text-charcoal/50 dark:text-white/50">
+                New to Lostify? Your account will be created automatically when you sign in
+              </p>
+
+              <div className="text-center">
+                <Link to="/" className="text-navy dark:text-accent hover:text-accent/80 font-medium transition-colors">
+                  ← Back to Home
+                </Link>
+              </div>
             </div>
-            
-            <div>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field"
-                placeholder="Password"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary w-full disabled:opacity-50"
-            >
-              {loading ? 'Signing in...' : 'Sign in as Admin'}
-            </button>
-
-            {activeTab === 'user' && (
-              <>
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-charcoal/20 dark:border-white/20"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white dark:bg-navy text-charcoal/60 dark:text-white/60">
-                      SST Students Sign in with Google
-                    </span>
-                  </div>
+          ) : (
+            <form className="space-y-4" onSubmit={handleAdminSubmit}>
+              {error && (
+                <div className="bg-lost/10 border border-lost text-lost px-4 py-3 rounded-lg">
+                  {error}
                 </div>
+              )}
+              
+              <div>
+                <input
+                  type="text"
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="input-field"
+                  placeholder="Admin Username"
+                />
+              </div>
+              
+              <div>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="input-field"
+                  placeholder="Admin Password"
+                />
+              </div>
 
-                <div className="flex justify-center">
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                    text="signin_with"
-                    theme="outline"
-                    size="large"
-                    width="100%"
-                  />
-                </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary w-full disabled:opacity-50"
+              >
+                {loading ? 'Signing in...' : 'Sign in as Admin'}
+              </button>
 
-                <p className="text-sm text-center text-charcoal/60 dark:text-white/60">
-                  Only @sst.scaler.com email addresses are allowed
-                </p>
-
-                <div className="text-center">
-                  <Link to="/" className="text-navy dark:text-accent hover:text-accent/80 font-medium transition-colors">
-                    ← Back to Home
-                  </Link>
-                </div>
-              </>
-            )}
-          </form>
+              <div className="text-center">
+                <Link to="/" className="text-navy dark:text-accent hover:text-accent/80 font-medium transition-colors">
+                  ← Back to Home
+                </Link>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>

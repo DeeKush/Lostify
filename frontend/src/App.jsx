@@ -7,7 +7,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import CreatePost from './pages/CreatePost';
 import MyPosts from './pages/MyPosts';
@@ -143,14 +142,6 @@ function App() {
               element={
                 <PageTransition>
                   <Login />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                <PageTransition>
-                  <Signup />
                 </PageTransition>
               }
             />
