@@ -207,7 +207,7 @@ export default function CreatePost() {
           </label>
           <input
             type="tel"
-            name="contactNumber"
+            name="contactInfo"
             value={formData.contactInfo}
             onChange={handleChange}
             className="input-field"
