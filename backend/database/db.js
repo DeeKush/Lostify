@@ -65,7 +65,7 @@ const postDb = {
   create: (postData) => {
     const id = `post_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const stmt = db.prepare(`
-      INSERT INTO posts (id, title, description, category, location, date, contactInfo, type, user, username, imageUrl, status)
+      INSERT INTO posts (id, title, description, category, location, date, contactInfo, type, user, imageUrl, status)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     
@@ -79,7 +79,7 @@ const postDb = {
       postData.contactInfo,
       postData.type,
       postData.user,
-      postData.username,
+      // postData.username,
       postData.imageUrl || null,
       'active'
     );
