@@ -57,6 +57,7 @@ function authMiddleware(req, res, next) {
   }
   
   req.user = decoded;
+  console.log("user: ", decoded)
   next();
 }
 
