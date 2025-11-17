@@ -66,7 +66,7 @@ const postDb = {
     const id = `post_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const stmt = db.prepare(`
       INSERT INTO posts (id, title, description, category, location, date, contactInfo, type, user, imageUrl, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     
     stmt.run(
