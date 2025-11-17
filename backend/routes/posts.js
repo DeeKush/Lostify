@@ -270,7 +270,7 @@ router.post('/create', authMiddleware, async (req, res) => {
       date: date || new Date().toISOString(),
       contactInfo,
       imageURL: imageURL || null,
-      user: req.user.username
+      user: req.user.id
     };
     
     const post = await createPost(postData);

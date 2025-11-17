@@ -56,8 +56,8 @@ function authMiddleware(req, res, next) {
     return res.status(401).json({ error: 'Token missing required fields - please log in again' });
   }
   
-  req.user = decoded.id;
-  // console.log("user: ", decoded)
+  req.user = decoded;
+  console.log("user: ", decoded)
   next();
 }
 
