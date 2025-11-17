@@ -77,7 +77,7 @@ export function AuthProvider({ children }) {
   };
 
   const googleLogin = async (credential) => {
-    const response = await axios.post('https://lostify-4z5d.onrender.com/api/auth/google', { credential });
+    const response = await axios.post('https://lostify-x7te.onrender.com//api/auth/google', { credential });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));

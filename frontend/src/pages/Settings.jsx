@@ -28,11 +28,11 @@ export default function Settings() {
 
   const loadSettings = async () => {
     try {
-      const userResponse = await axios.get('https://lostify-4z5d.onrender.com/api/settings');
+      const userResponse = await axios.get('https://lostify-x7te.onrender.com//api/settings');
       setUserSettings({ ...userSettings, ...userResponse.data });
 
       if (user?.isAdmin) {
-        const adminResponse = await axios.get('https://lostify-4z5d.onrender.com/api/settings/admin');
+        const adminResponse = await axios.get('https://lostify-x7te.onrender.com//api/settings/admin');
         setAdminSettings({ ...adminSettings, ...adminResponse.data });
       }
     } catch (error) {
@@ -43,7 +43,7 @@ export default function Settings() {
   const saveUserSettings = async () => {
     setLoading(true);
     try {
-      await axios.put('https://lostify-4z5d.onrender.com/api/settings', userSettings);
+      await axios.put('https://lostify-x7te.onrender.com//api/settings', userSettings);
       toast.success('Settings saved successfully!');
     } catch (error) {
       toast.error('Failed to save settings');

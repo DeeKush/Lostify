@@ -23,7 +23,7 @@ export default function AdminDashboard() {
     setLoading(true);
     setError(false);
     try {
-      const response = await axios.get('https://lostify-4z5d.onrender.com/api/admin/analytics', { withCredentials: true });
+      const response = await axios.get('https://lostify-x7te.onrender.com//api/admin/analytics', { withCredentials: true });
       setMetrics(response.data);
     } catch (error) {
       console.error('Failed to load dashboard metrics:', error);

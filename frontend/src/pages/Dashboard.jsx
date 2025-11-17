@@ -48,7 +48,7 @@ export default function Dashboard() {
       if (filters.sortBy) params.sortBy = filters.sortBy;
       if (search) params.search = search;
       
-      const response = await axios.get('https://lostify-4z5d.onrender.com/api/posts', { params });
+      const response = await axios.get('https://lostify-x7te.onrender.com//api/posts', { params });
       setPosts(response.data);
     } catch (error) {
       toast.error('Failed to load posts');
