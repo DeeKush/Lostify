@@ -148,51 +148,51 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                //<ProtectedRoute>
+                <ProtectedRoute>
                   <PageTransition>
                     <Dashboard />
                   </PageTransition>
-                //</ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/create"
               element={
-                //<ProtectedRoute>
+                <ProtectedRoute>
                   <PageTransition>
                     <CreatePost />
                   </PageTransition>
-                //</ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/my-posts"
               element={
-                //<ProtectedRoute>
+                <ProtectedRoute>
                   <PageTransition>
                     <MyPosts />
                   </PageTransition>
-                //</ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/my-matches"
               element={
-                //<ProtectedRoute>
+                <ProtectedRoute>
                   <PageTransition>
                     <MyMatches />
                   </PageTransition>
-                //</ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/settings"
               element={
-                //<ProtectedRoute>
+                <ProtectedRoute>
                   <PageTransition>
                     <Settings />
                   </PageTransition>
-                //</ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
