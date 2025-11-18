@@ -99,7 +99,7 @@ export default function MyMatches() {
                       <p><strong>Location:</strong> {match.matchedPost.location}</p>
                       <p><strong>Date:</strong> {new Date(match.matchedPost.date).toLocaleDateString()}</p>
                       <p><strong>Contact:</strong> {match.matchedPost.contactInfo}</p>
-                      <p><strong>Posted by:</strong> {match.matchedPost.user}</p>
+                      <p><strong>Posted by:</strong> {match.matchedPost.username.split('.')[0]}</p>
                     </div>
                   </div>
                 </div>
@@ -112,7 +112,7 @@ export default function MyMatches() {
                     href={`tel:${match.matchedPost.contactInfo}`}
                     className="btn-primary inline-block"
                   >
-                    Contact {match.matchedPost.user}
+                    Contact {match.matchedPost.username.split('.')[0]}
                   </a>
                 </div>
               </div>

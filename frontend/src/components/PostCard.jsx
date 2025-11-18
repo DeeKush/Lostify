@@ -22,7 +22,7 @@ export default function PostCard({ post }) {
     }
     return `+91${cleaned}`;
   };
-  console.log(post.contactInfo)
+  console.log(post.username)
   const handleWhatsApp = () => {
     const phone = formatPhoneNumber(post.contactInfo);
     const message = encodeURIComponent(
@@ -120,7 +120,7 @@ export default function PostCard({ post }) {
                 clipRule="evenodd"
               />
             </svg>
-            Posted by {post.username}
+            Posted by {post.username.split(".")[0]}
           </p>
         </div>
 
