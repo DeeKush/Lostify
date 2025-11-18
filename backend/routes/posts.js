@@ -260,6 +260,7 @@ router.post('/create', authMiddleware, async (req, res) => {
         return res.status(400).json({ error: 'Please select a valid date — future dates are not allowed.' });
       }
     }
+    console.log('username: ', req.user.username);
     
     const postData = {
       title,
