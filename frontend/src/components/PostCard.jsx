@@ -24,7 +24,7 @@ export default function PostCard({ post }) {
   };
 
   const handleWhatsApp = () => {
-    const phone = formatPhoneNumber(post.contactNumber);
+    const phone = formatPhoneNumber(post.contactInfo);
     const message = encodeURIComponent(
       `Hi, I'm contacting you about "${post.title}" on Lostify.`
     );
