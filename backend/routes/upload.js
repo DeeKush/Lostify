@@ -4,12 +4,6 @@ const multer = require('multer');
 const axios = require('axios');
 const path = require('path');
 
-
-const GITHUB_TOKEN="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"
-const GITHUB_OWNER="DeeKush"
-const GITHUB_REPO="Lostify-images"
-
-
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 3 * 1024 * 1024 },
@@ -26,7 +20,7 @@ const toBase64 = buffer => buffer.toString('base64');
 
 // Upload to GitHub repo
 async function uploadToGithub(filename, contentBase64) {
-  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filename}`;
+  const url = `https://api.github.com/repos/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/contents/${filename}`;
 
   const response = await axios.put(
     url,
@@ -36,7 +30,7 @@ async function uploadToGithub(filename, contentBase64) {
     },
     {
       headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
+        Authorization: `token ${process.env.GITHUB_TOKEN}`,
         'Content-Type': 'application/json'
       }
     }
