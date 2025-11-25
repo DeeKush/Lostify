@@ -9,6 +9,7 @@
     "build": "echo 'No build step required'"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.15",
     "axios": "^1.13.2",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^12.4.1",

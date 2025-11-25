@@ -3,9 +3,9 @@ const router = express.Router();
 const { authMiddleware, adminMiddleware } = require('../utils/auth');
 const { userDb } = require('../database/db');
 
-router.get('/', authMiddleware, adminMiddleware, (req, res) => {
+router.get('/', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const users = userDb.getAll();
+    const users = await userDb.getAll();
     const userList = users.map(user => ({
       id: user.id,
       username: user.username,
@@ -22,11 +22,11 @@ router.get('/', authMiddleware, adminMiddleware, (req, res) => {
   }
 });
 
-router.put('/:userId/status', authMiddleware, adminMiddleware, (req, res) => {
+router.put('/:userId/status', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
     
-    const user = userDb.toggleEnabled(userId);
+    const user = await userDb.toggleEnabled(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }

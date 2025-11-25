@@ -31,10 +31,10 @@ router.post('/google', async (req, res) => {
       });
     }
 
-    let user = userDb.getByEmail(email);
+    let user = await userDb.getByEmail(email);
     
     if (!user) {
-      user = userDb.getByGoogleId(googleId);
+      user = await userDb.getByGoogleId(googleId);
     }
 
     if (!user) {
@@ -42,12 +42,12 @@ router.post('/google', async (req, res) => {
       let finalUsername = username;
       let counter = 1;
       
-      while (userDb.getByUsername(finalUsername)) {
+      while (await userDb.getByUsername(finalUsername)) {
         finalUsername = `${username}${counter}`;
         counter++;
       }
 
-      user = userDb.create({
+      user = await userDb.create({
         username: finalUsername,
         email: email,
         googleId: googleId,
@@ -57,7 +57,7 @@ router.post('/google', async (req, res) => {
       
       console.log(`✅ New user created via Google: ${email}`);
     } else {
-      userDb.updateLastLogin(user.id);
+      await userDb.updateLastLogin(user.id);
     }
 
     if (!user.isEnabled) {
@@ -98,7 +98,7 @@ router.post('/admin/login', async (req, res) => {
       return res.status(400).json({ error: 'Username and password are required' });
     }
     
-    const user = userDb.getByUsername(username);
+    const user = await userDb.getByUsername(username);
     
     if (!user || user.role !== 'admin') {
       return res.status(401).json({ error: 'Invalid admin credentials' });
@@ -109,7 +109,7 @@ router.post('/admin/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid admin credentials' });
     }
 
-    userDb.updateLastLogin(user.id);
+    await userDb.updateLastLogin(user.id);
     
     const token = generateToken({
       id: user.id,

@@ -1,11 +1,13 @@
 const { userDb, postDb } = require('../database/db');
 
-function getUser(username) {
-  return userDb.getByUsername(username);
+// USERS -----------------------------
+
+async function getUser(username) {
+  return await userDb.getByUsername(username);
 }
 
-function createUser(userData) {
-  return userDb.create({
+async function createUser(userData) {
+  return await userDb.create({
     username: userData.username,
     email: userData.email,
     password: userData.passwordHash,
@@ -14,28 +16,30 @@ function createUser(userData) {
   });
 }
 
-function getPost(postId) {
-  return postDb.getById(postId);
+// POSTS -----------------------------
+
+async function getPost(postId) {
+  return await postDb.getById(postId);
 }
 
-function getAllPosts() {
-  return postDb.getAll();
+async function getAllPosts() {
+  return await postDb.getAll();
 }
 
-function createPost(postData) {
-  return postDb.create(postData);
+async function createPost(postData) {
+  return await postDb.create(postData);
 }
 
-function updatePost(postId, updateData) {
-  return postDb.update(postId, updateData);
+async function updatePost(postId, updateData) {
+  return await postDb.update(postId, updateData);
 }
 
-function deletePost(postId) {
-  return postDb.delete(postId);
+async function deletePost(postId) {
+  return await postDb.delete(postId);
 }
 
-function getUserPosts(userId) {
-  return postDb.getByUser(userId);
+async function getUserPosts(userId) {
+  return await postDb.getByUser(userId);
 }
 
 module.exports = {
