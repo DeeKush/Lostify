@@ -271,9 +271,8 @@ router.post('/create', authMiddleware, async (req, res) => {
       contactInfo,
       user: req.user.id,
       username: req.user.username,
-      imageURL: imageURL || null,
-    };
-    
+      imageUrl: imageURL || null,
+    };    
     const post = await createPost(postData);
     res.status(201).json(post);
   } catch (error) {

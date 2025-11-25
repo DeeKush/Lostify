@@ -1,67 +1,71 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const axios = require('axios');
 const path = require('path');
-const fs = require('fs');
 
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'image-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const GITHUB_TOKEN="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"
+const GITHUB_OWNER="DeeKush"
+const GITHUB_REPO="Lostify-images"
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|webp/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedTypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb(new Error('Only images (jpg, jpeg, png, webp) are allowed'));
-  }
-};
 
 const upload = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 3 * 1024 * 1024 },
-  fileFilter: fileFilter
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+    if (allowed.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Invalid file type'));
+  }
 });
 
-router.post('/', upload.single('image'), (req, res) => {
+
+// Convert buffer to base64
+const toBase64 = buffer => buffer.toString('base64');
+
+// Upload to GitHub repo
+async function uploadToGithub(filename, contentBase64) {
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filename}`;
+
+  const response = await axios.put(
+    url,
+    {
+      message: `upload ${filename}`,
+      content: contentBase64
+    },
+    {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  console.log("GitHub upload response: ", response.data);
+  return response.data;
+}
+
+router.post('/', upload.single('image'), async (req, res) => {
+  console.log("Upload request received");
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
 
-    const imageUrl = `/uploads/${req.file.filename}`;
-    res.json({ imageUrl });
-  } catch (error) {
-    console.error('Upload error:', error);
-    res.status(500).json({ error: 'File upload failed' });
-  }
-});
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const filename = `lostify-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
+    const base64 = toBase64(req.file.buffer);
 
-router.use((error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
-    if (error.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ error: 'File too large. Maximum size is 3MB' });
-    }
-    return res.status(400).json({ error: error.message });
+    const gh = await uploadToGithub(filename, base64);
+
+    const rawUrl = gh.content.download_url;
+    console.log("File uploaded to GitHub: ", rawUrl);
+
+    res.json({ imageUrl: rawUrl });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Upload failed', details: err.message });
   }
-  if (error.message) {
-    return res.status(400).json({ error: error.message });
-  }
-  next(error);
 });
 
 module.exports = router;

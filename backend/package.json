@@ -7,9 +7,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "echo 'No build step required'"
-
   },
   "dependencies": {
+    "axios": "^1.13.2",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^12.4.1",
     "cors": "^2.8.5",
@@ -20,9 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.10",
+    "nodemon": "^3.1.11",
     "string-similarity": "^4.0.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
   }
 }

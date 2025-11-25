@@ -40,11 +40,11 @@ export default function PostCard({ post }) {
       whileHover={{ y: -8, transition: { duration: 0.2 } }}
       className={`card overflow-hidden border-l-4 ${borderColor} hover:shadow-2xl transition-shadow duration-200`}
     >
-      {post.imageURL ? (
+      {post.imageUrl ? (
         <motion.img
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
-          src={post.imageURL}
+          src={post.imageUrl}
           alt={post.title}
           className="w-full h-48 object-cover"
         />
