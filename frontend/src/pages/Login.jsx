@@ -11,6 +11,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const { loginAdmin, googleLogin } = useAuth();
   const navigate = useNavigate();
 
@@ -33,6 +34,7 @@ export default function Login() {
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
+    setGoogleLoading(true);
     try {
       await googleLogin(credentialResponse.credential);
       toast.success('Welcome to Lostify!');
@@ -40,6 +42,7 @@ export default function Login() {
     } catch (err) {
       const errorMsg = err.response?.data?.error || 'Login failed';
       toast.error(errorMsg);
+      setGoogleLoading(false);
     }
   };
 
@@ -94,24 +97,38 @@ export default function Login() {
 
           {activeTab === 'user' ? (
             <div className="space-y-6">
-              <div className="flex justify-center">
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
-                  text="signin_with"
-                  theme="outline"
-                  size="large"
-                  width="100%"
-                />
-              </div>
+              {googleLoading ? (
+                <div className="flex flex-col items-center justify-center py-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-6 h-6 border-3 border-accent border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-charcoal dark:text-white font-medium">Signing in...</span>
+                  </div>
+                  <p className="text-sm text-charcoal/60 dark:text-white/60">
+                    Please wait while we verify your account
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex justify-center">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      text="signin_with"
+                      theme="outline"
+                      size="large"
+                      width="100%"
+                    />
+                  </div>
 
-              <p className="text-sm text-center text-charcoal/60 dark:text-white/60">
-                Only @sst.scaler.com email addresses are allowed
-              </p>
+                  <p className="text-sm text-center text-charcoal/60 dark:text-white/60">
+                    Only @sst.scaler.com email addresses are allowed
+                  </p>
 
-              <p className="text-xs text-center text-charcoal/50 dark:text-white/50">
-                New to Lostify? Your account will be created automatically when you sign in
-              </p>
+                  <p className="text-xs text-center text-charcoal/50 dark:text-white/50">
+                    New to Lostify? Your account will be created automatically when you sign in
+                  </p>
+                </>
+              )}
 
               <div className="text-center">
                 <Link to="/" className="text-navy dark:text-accent hover:text-accent/80 font-medium transition-colors">
@@ -122,7 +139,7 @@ export default function Login() {
           ) : (
             <form className="space-y-4" onSubmit={handleAdminSubmit}>
               {error && (
-                <div className="bg-lost/10 border border-lost text-lost px-4 py-3 rounded-lg">
+                <div className="bg-lost/10 border border-lost text-lost px-4 py-3 rounded-lg text-sm">
                   {error}
                 </div>
               )}
@@ -133,7 +150,8 @@ export default function Login() {
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="input-field"
+                  disabled={loading}
+                  className="input-field disabled:opacity-70 disabled:cursor-not-allowed"
                   placeholder="Admin Username"
                 />
               </div>
@@ -144,7 +162,8 @@ export default function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-field"
+                  disabled={loading}
+                  className="input-field disabled:opacity-70 disabled:cursor-not-allowed"
                   placeholder="Admin Password"
                 />
               </div>
@@ -152,9 +171,31 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-primary w-full disabled:opacity-50"
+                className="btn-primary w-full disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loading ? 'Signing in...' : 'Sign in as Admin'}
+                {loading && (
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5 animate-spin"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                )}
+                <span>{loading ? 'Signing in...' : 'Sign in as Admin'}</span>
               </button>
 
               <div className="text-center">

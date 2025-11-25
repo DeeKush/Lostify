@@ -1,12 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ContactModal from './ContactModal';
 import logo from '../assets/lostify-logo.jpg';
 
 export default function Footer() {
   const [showContact, setShowContact] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button when user scrolls down 300px
+      setShowBackToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Stable smooth scroll handler - works across all browsers including Safari
+  const handleScrollToTop = useCallback(() => {
+    // Primary method - works in modern browsers
+    if ('scrollBehavior' in document.documentElement.style) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Fallback for older browsers (including older Safari versions)
+      const scrollStep = -window.scrollY / (500 / 15);
+      const scrollInterval = setInterval(() => {
+        if (window.scrollY !== 0) {
+          window.scrollBy(0, scrollStep);
+        } else {
+          clearInterval(scrollInterval);
+        }
+      }, 15);
+    }
+  }, []);
+
+  // For footer links - regular smooth scroll
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -40,7 +70,7 @@ export default function Footer() {
                 <Link 
                   to="/" 
                   onClick={scrollToTop}
-                  className="text-lightGray/80 hover:text-accent transition-colors inline-block"
+                  className="text-lightGray/80 hover:text-accent hover:underline decoration-accent decoration-2 underline-offset-4 transition-all duration-200 inline-block"
                 >
                   Home
                 </Link>
@@ -49,7 +79,7 @@ export default function Footer() {
                 <Link 
                   to="/dashboard" 
                   onClick={scrollToTop}
-                  className="text-lightGray/80 hover:text-accent transition-colors inline-block"
+                  className="text-lightGray/80 hover:text-accent hover:underline decoration-accent decoration-2 underline-offset-4 transition-all duration-200 inline-block"
                 >
                   Browse
                 </Link>
@@ -58,7 +88,7 @@ export default function Footer() {
                 <Link 
                   to="/login" 
                   onClick={scrollToTop}
-                  className="text-lightGray/80 hover:text-accent transition-colors inline-block"
+                  className="text-lightGray/80 hover:text-accent hover:underline decoration-accent decoration-2 underline-offset-4 transition-all duration-200 inline-block"
                 >
                   Login
                 </Link>
@@ -67,7 +97,7 @@ export default function Footer() {
                 <Link 
                   to="/signup" 
                   onClick={scrollToTop}
-                  className="text-lightGray/80 hover:text-accent transition-colors inline-block"
+                  className="text-lightGray/80 hover:text-accent hover:underline decoration-accent decoration-2 underline-offset-4 transition-all duration-200 inline-block"
                 >
                   Sign Up
                 </Link>
@@ -78,7 +108,7 @@ export default function Footer() {
                     scrollToTop();
                     setShowContact(true);
                   }}
-                  className="text-lightGray/80 hover:text-accent transition-colors text-left"
+                  className="text-lightGray/80 hover:text-accent hover:underline decoration-accent decoration-2 underline-offset-4 transition-all duration-200 text-left"
                 >
                   Feedback & Support
                 </button>
@@ -101,6 +131,36 @@ export default function Footer() {
           </p>
         </div>
       </div>
+      
+      {/* Back to Top Button */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            onClick={handleScrollToTop}
+            className="fixed bottom-6 right-6 z-50 bg-accent hover:bg-accent/90 text-navy p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group"
+            aria-label="Back to top"
+          >
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6 transform group-hover:-translate-y-1 transition-transform duration-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 10l7-7m0 0l7 7m-7-7v18"
+              />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <ContactModal isOpen={showContact} onClose={() => setShowContact(false)} />
     </motion.footer>
   );
