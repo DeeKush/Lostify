@@ -6,10 +6,42 @@ const { generateToken, hashPassword, comparePassword } = require('../utils/auth'
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-router.post('/google', async (req, res) => {
+router.post('/google/getall', async (req, res) => {
+
+  console.log('Received request to get all users with credentials:', req.body);
+  const credential = req.body;
   try {
-    const { credential } = req.body;
+    console.log('Verifying Google credential...');
+    if (credential.type == 'admin') {
+      console.log('Verifying...');
+      const AllUsers = await userDb.getAll();
+      const userList = AllUsers.map(user => ({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.role === 'admin',
+        enabled: user.isEnabled === 1,
+        createdAt: user.createdAt,
+        lastLogin: user.lastLogin
+      }));
+      
+      console.log('Admin fetching all users:', userList);
+      return res.json(userList);
+    }
+  } catch (error) {
+    console.error('Get all users error:', error);
+    return res.status(500).json({ error: 'Failed to load users' });
+  }
+  
+});
+
+router.post('/google', async (req, res) => {
+  console.log('Received Google auth request:', req.body.type);
+  try {
+    console.log('Google credential:', credential.type);
     
+    
+    const { credential } = req.body;
     if (!credential) {
       return res.status(400).json({ error: 'Google credential is required' });
     }
