@@ -3,9 +3,9 @@ const router = express.Router();
 const { authMiddleware, adminMiddleware } = require('../utils/auth');
 const { settingsDb } = require('../database/db');
 
-router.get('/', authMiddleware, (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
   try {
-    const settings = settingsDb.getUserSettings(req.user.id);
+    const settings = await settingsDb.getUserSettings(req.user.id);
     res.json(settings || {
       defaultPostType: 'lost',
       contactVisibility: 'public',
@@ -18,9 +18,9 @@ router.get('/', authMiddleware, (req, res) => {
   }
 });
 
-router.put('/', authMiddleware, (req, res) => {
+router.put('/', authMiddleware, async (req, res) => {
   try {
-    const settings = settingsDb.setUserSettings(req.user.id, req.body);
+    const settings = await settingsDb.setUserSettings(req.user.id, req.body);
     res.json({ message: 'Settings saved successfully', settings });
   } catch (error) {
     console.error('Save settings error:', error);
@@ -28,9 +28,9 @@ router.put('/', authMiddleware, (req, res) => {
   }
 });
 
-router.get('/admin', authMiddleware, adminMiddleware, (req, res) => {
+router.get('/admin', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const adminSettings = settingsDb.getAdminSettings();
+    const adminSettings = await settingsDb.getAdminSettings();
     res.json(adminSettings || {
       moderationThreshold: 3,
       requireManualApproval: 0,
@@ -42,9 +42,9 @@ router.get('/admin', authMiddleware, adminMiddleware, (req, res) => {
   }
 });
 
-router.put('/admin', authMiddleware, adminMiddleware, (req, res) => {
+router.put('/admin', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const adminSettings = settingsDb.setAdminSettings(req.body);
+    const adminSettings = await settingsDb.setAdminSettings(req.body);
     res.json({ message: 'Admin settings saved successfully', adminSettings });
   } catch (error) {
     console.error('Save admin settings error:', error);

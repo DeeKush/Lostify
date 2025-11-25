@@ -3,11 +3,11 @@ const router = express.Router();
 const { authMiddleware, adminMiddleware } = require('../utils/auth');
 const { userDb, postDb, feedbackDb } = require('../database/db');
 
-router.get('/', authMiddleware, adminMiddleware, (req, res) => {
+router.get('/', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const posts = postDb.getAll();
-    const users = userDb.getAll();
-    const feedback = feedbackDb.getAll();
+    const posts = await postDb.getAll();
+    const users = await userDb.getAll();
+    const feedback = await feedbackDb.getAll();
 
     const lostPosts = posts.filter(p => p.type === 'lost').length;
     const foundPosts = posts.filter(p => p.type === 'found').length;
