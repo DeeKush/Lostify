@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { MdDevices, MdWork, MdDescription, MdCheckroom, MdWatch, MdCategory } from "react-icons/md";
+import ItemDetailModal from "./ItemDetailModal";
 
 export default function PostCard({ post }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -22,8 +27,22 @@ export default function PostCard({ post }) {
     }
     return `+91${cleaned}`;
   };
+
+  const getCategoryIcon = () => {
+    const categoryIcons = {
+      "Electronics": <MdDevices className="w-4 h-4 flex-shrink-0" />,
+      "Bags": <MdWork className="w-4 h-4 flex-shrink-0" />,
+      "Documents": <MdDescription className="w-4 h-4 flex-shrink-0" />,
+      "Clothing": <MdCheckroom className="w-4 h-4 flex-shrink-0" />,
+      "Accessories": <MdWatch className="w-4 h-4 flex-shrink-0" />,
+      "Other": <MdCategory className="w-4 h-4 flex-shrink-0" />
+    };
+    return categoryIcons[post.category] || <MdCategory className="w-4 h-4 flex-shrink-0" />;
+  };
+
   console.log(post.username)
-  const handleWhatsApp = () => {
+  const handleWhatsApp = (e) => {
+    e.stopPropagation();
     const phone = formatPhoneNumber(post.contactInfo);
     const message = encodeURIComponent(
       `Hi, I'm contacting you about "${post.title}" on Lostify.`
@@ -34,22 +53,29 @@ export default function PostCard({ post }) {
   const borderColor = post.type === "lost" ? "border-l-lost" : "border-l-found";
 
   return (
-    <motion.div
+    <>
+      <ItemDetailModal 
+        post={post} 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+      <motion.div
+        onClick={() => setIsModalOpen(true)}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8, transition: { duration: 0.2 } }}
-      className={`card overflow-hidden border-l-4 ${borderColor} hover:shadow-2xl transition-shadow duration-200 w-full`}
+      className={`card overflow-hidden border-l-4 ${borderColor} hover:shadow-2xl transition-shadow duration-200 w-full cursor-pointer`}
     >
       {post.imageUrl ? (
-        <motion.img
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
-          src={post.imageUrl}
-          alt={post.title}
-          className="w-full h-48 object-cover"
-        />
+        <div className="w-full h-40 sm:h-48 md:h-56 bg-gray-200 dark:bg-gray-700 rounded-t-xl overflow-hidden flex items-center justify-center">
+          <img
+            src={post.imageUrl}
+            alt={post.title}
+            className="w-full h-full object-contain"
+          />
+        </div>
       ) : (
-        <div className="w-full h-48 bg-lightGray dark:bg-navy flex items-center justify-center">
+        <div className="w-full h-40 sm:h-48 md:h-56 bg-gray-200 dark:bg-gray-700 rounded-t-xl overflow-hidden flex items-center justify-center">
           <svg
             className="w-16 h-16 text-charcoal/40 dark:text-white/50"
             fill="currentColor"
@@ -107,9 +133,7 @@ export default function PostCard({ post }) {
             <span>{formatDateTime(post.date || post.createdAt)}</span>
           </p>
           <p className="flex items-center gap-2 break-words">
-            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-            </svg>
+            {getCategoryIcon()}
             <span className="break-words">{post.category}</span>
           </p>
           <p className="flex items-center gap-2 break-words">
@@ -137,5 +161,6 @@ export default function PostCard({ post }) {
         </motion.button>
       </div>
     </motion.div>
+    </>
   );
 }
