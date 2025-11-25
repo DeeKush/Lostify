@@ -15,8 +15,9 @@ export default function Users() {
   const loadUsers = async () => {
     setLoading(true);
     setError(false);
+
     try {
-      const response = await axios.get('https://lostify-x7te.onrender.com/api/auth/google', { withCredentials: true });
+      const response = await axios.post('https://lostify-x7te.onrender.com/api/auth/google/getall', { withCredentials: true , type: 'admin'});
       setUsers(response.data || []);
     } catch (error) {
       console.error('Failed to load users:', error);
