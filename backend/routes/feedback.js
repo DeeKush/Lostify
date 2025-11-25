@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Name, email, and message are required' });
     }
     
-    feedbackDb.create({ name, email, message });
+    await feedbackDb.create({ name, email, message });
     res.json({ message: 'Feedback submitted successfully. Thank you!' });
   } catch (error) {
     console.error('Feedback submission error:', error);
@@ -19,9 +19,9 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/', authMiddleware, adminMiddleware, (req, res) => {
+router.get('/', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const feedback = feedbackDb.getAll();
+    const feedback = await feedbackDb.getAll();
     res.json(feedback);
   } catch (error) {
     console.error('Get feedback error:', error);
@@ -29,10 +29,10 @@ router.get('/', authMiddleware, adminMiddleware, (req, res) => {
   }
 });
 
-router.put('/:id', authMiddleware, adminMiddleware, (req, res) => {
+router.put('/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const { status } = req.body;
-    const feedback = feedbackDb.updateStatus(req.params.id, status, req.user.id);
+    const feedback = await feedbackDb.updateStatus(req.params.id, status, req.user.id);
     
     if (!feedback) {
       return res.status(404).json({ error: 'Feedback not found' });
@@ -45,9 +45,9 @@ router.put('/:id', authMiddleware, adminMiddleware, (req, res) => {
   }
 });
 
-router.delete('/:id', authMiddleware, adminMiddleware, (req, res) => {
+router.delete('/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    feedbackDb.delete(req.params.id);
+    await feedbackDb.delete(req.params.id);
     res.json({ message: 'Feedback deleted successfully' });
   } catch (error) {
     console.error('Delete feedback error:', error);
@@ -55,9 +55,9 @@ router.delete('/:id', authMiddleware, adminMiddleware, (req, res) => {
   }
 });
 
-router.get('/count/pending', authMiddleware, adminMiddleware, (req, res) => {
+router.get('/count/pending', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const count = feedbackDb.getPendingCount();
+    const count = await feedbackDb.getPendingCount();
     res.json({ count });
   } catch (error) {
     console.error('Get pending count error:', error);
