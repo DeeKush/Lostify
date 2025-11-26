@@ -36,10 +36,8 @@ router.post('/google/getall', async (req, res) => {
 });
 
 router.post('/google', async (req, res) => {
-  console.log('Received Google auth request:', req.body.type);
   try {
-    console.log('Google credential:', credential.type);
-    
+    // console.log('Google credential:', credential.type);
     
     const { credential } = req.body;
     if (!credential) {
