@@ -17,7 +17,7 @@ export default function Users() {
     setError(false);
 
     try {
-      const response = await axios.post('https://lostify-x7te.onrender.com/api/auth/google/getall', { withCredentials: true , type: 'admin'});
+      const response = await axios.post('https://lostify-sst.onrender.com/auth/google/getall', { withCredentials: true , type: 'admin'});
       setUsers(response.data || []);
     } catch (error) {
       console.error('Failed to load users:', error);
@@ -34,7 +34,7 @@ export default function Users() {
 
   const toggleUserStatus = async (userId, currentStatus) => {
     try {
-      await axios.put(`https://lostify-x7te.onrender.com/api/admin/users/${userId}/status`, {
+      await axios.put(`https://lostify-sst.onrender.com/admin/users/${userId}/status`, {
         enabled: !currentStatus,
       }, { withCredentials: true });
       toast.success('User status updated');

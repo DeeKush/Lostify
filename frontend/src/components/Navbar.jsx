@@ -37,7 +37,7 @@ export default function Navbar() {
 
   const fetchPendingFeedback = async () => {
     try {
-      const response = await axios.get('https://lostify-x7te.onrender.com/api/feedback/count/pending', { withCredentials: true });
+      const response = await axios.get('https://lostify-sst.onrender.com/feedback/count/pending', { withCredentials: true });
       setPendingFeedbackCount(response.data.count);
     } catch (error) {
       console.error('Failed to fetch pending feedback count');

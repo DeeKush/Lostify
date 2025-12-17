@@ -87,14 +87,14 @@ export default function CreatePost() {
         const uploadFormData = new FormData();
         uploadFormData.append('image', imageFile);
 
-        const uploadResponse = await axios.post('https://lostify-x7te.onrender.com/api/upload', uploadFormData, {
+        const uploadResponse = await axios.post('https://lostify-sst.onrender.com/upload', uploadFormData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         imageURL = uploadResponse.data.imageUrl;
         setUploading(false);
       }
 
-      await axios.post('https://lostify-x7te.onrender.com/api/posts/create', { ...formData, imageURL });
+      await axios.post('https://lostify-sst.onrender.com/posts/create', { ...formData, imageURL });
       toast.success('Post created successfully!');
       navigate('/my-posts');
     } catch (err) {

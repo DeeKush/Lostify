@@ -30,8 +30,8 @@ export default function Admin() {
   const fetchData = async () => {
     try {
       const [statsRes, postsRes] = await Promise.all([
-        axios.get('https://lostify-x7te.onrender.com/api/posts/stats/admin'),
-        axios.get('https://lostify-x7te.onrender.com/api/posts/admin/all')
+        axios.get('https://lostify-sst.onrender.com/posts/stats/admin'),
+        axios.get('https://lostify-sst.onrender.com/posts/admin/all')
       ]);
       setStats(statsRes.data);
       setPosts(postsRes.data);
@@ -47,7 +47,7 @@ export default function Admin() {
     if (!window.confirm('Are you sure you want to delete this post?')) return;
     
     try {
-      await axios.delete(`https://lostify-x7te.onrender.com/api/posts/${id}`);
+      await axios.delete(`https://lostify-sst.onrender.com/posts/${id}`);
       toast.success('Post deleted successfully');
       fetchData();
     } catch (error) {
@@ -57,7 +57,7 @@ export default function Admin() {
 
   const handleFlag = async (id) => {
     try {
-      await axios.patch(`https://lostify-x7te.onrender.com/api/posts/admin/${id}`, { status: 'flagged' });
+      await axios.patch(`https://lostify-sst.onrender.com/posts/admin/${id}`, { status: 'flagged' });
       toast.success('Post flagged successfully');
       fetchData();
     } catch (error) {
@@ -67,7 +67,7 @@ export default function Admin() {
 
   const handleSaveNote = async (id) => {
     try {
-      await axios.patch(`https://lostify-x7te.onrender.com/api/posts/admin/${id}`, { adminNote });
+      await axios.patch(`https://lostify-sst.onrender.com/posts/admin/${id}`, { adminNote });
       toast.success('Admin note saved');
       setEditingNote(null);
       setAdminNote('');
@@ -79,7 +79,7 @@ export default function Admin() {
 
   const handleExportCSV = async () => {
     try {
-      const response = await axios.get('https://lostify-x7te.onrender.com/api/posts/export/csv', {
+      const response = await axios.get('https://lostify-sst.onrender.com/posts/export/csv', {
         responseType: 'blob'
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
