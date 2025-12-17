@@ -23,7 +23,7 @@ export default function Analytics() {
     setLoading(true);
     setError(false);
     try {
-      const response = await axios.get('https://lostify-x7te.onrender.com/api/admin/analytics', { withCredentials: true });
+      const response = await axios.get('https://lostify-sst.onrender.com/admin/analytics', { withCredentials: true });
       setStats(response.data);
     } catch (error) {
       console.error('Failed to load analytics:', error);

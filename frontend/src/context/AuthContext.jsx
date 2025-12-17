@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
       if (token && userData) {
         try {
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          await axios.get('https://lostify-x7te.onrender.com/api/posts/my-posts');
+          await axios.get('https://lostify-sst.onrender.com/posts/my-posts');
           setUser(JSON.parse(userData));
         } catch (error) {
           localStorage.removeItem('token');
@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (username, password) => {
-    const response = await axios.post('https://lostify-x7te.onrender.com/api/auth/login', { username, password });
+    const response = await axios.post('https://lostify-sst.onrender.com/auth/login', { username, password });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -57,7 +57,7 @@ export function AuthProvider({ children }) {
   };
 
   const loginAdmin = async (username, password) => {
-    const response = await axios.post('https://lostify-x7te.onrender.com/api/auth/admin/login', { username, password });
+    const response = await axios.post('https://lostify-sst.onrender.com/auth/admin/login', { username, password });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -67,7 +67,7 @@ export function AuthProvider({ children }) {
   };
 
   const signup = async (username, email, password) => {
-    const response = await axios.post('https://lostify-x7te.onrender.com/api/auth/signup', { username, email, password });
+    const response = await axios.post('https://lostify-sst.onrender.com/auth/signup', { username, email, password });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -77,7 +77,7 @@ export function AuthProvider({ children }) {
   };
 
   const googleLogin = async (credential) => {
-    const response = await axios.post('https://lostify-x7te.onrender.com/api/auth/google', { credential });
+    const response = await axios.post('https://lostify-sst.onrender.com/auth/google', { credential });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));

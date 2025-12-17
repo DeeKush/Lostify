@@ -13,7 +13,7 @@ export default function MyPosts() {
 
   const fetchMyPosts = async () => {
     try {
-      const response = await axios.get('https://lostify-x7te.onrender.com/api/posts/my-posts');
+      const response = await axios.get('https://lostify-sst.onrender.com/posts/my-posts');
       setPosts(response.data);
     } catch (error) {
       toast.error(error.response?.data?.error || 'Failed to load posts');
@@ -26,7 +26,7 @@ export default function MyPosts() {
     if (!window.confirm('Are you sure you want to delete this post?')) return;
     
     try {
-      await axios.delete(`https://lostify-x7te.onrender.com/api/posts/${id}`);
+      await axios.delete(`https://lostify-sst.onrender.com/posts/${id}`);
       setPosts(posts.filter(p => p.id !== id));
       toast.success('Post deleted successfully');
     } catch (error) {
@@ -36,7 +36,7 @@ export default function MyPosts() {
 
   const handleResolve = async (id) => {
     try {
-      await axios.put(`https://lostify-x7te.onrender.com/api/posts/${id}`, { status: 'resolved' });
+      await axios.put(`https://lostify-sst.onrender.com/posts/${id}`, { status: 'resolved' });
       toast.success('Post marked as resolved');
       fetchMyPosts();
     } catch (error) {

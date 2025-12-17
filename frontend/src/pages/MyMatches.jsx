@@ -12,7 +12,7 @@ export default function MyMatches() {
 
   const fetchMatches = async () => {
     try {
-      const response = await axios.get('https://lostify-x7te.onrender.com/api/posts/my-matches');
+      const response = await axios.get('https://lostify-sst.onrender.com/posts/my-matches');
       setMatches(response.data);
     } catch (error) {
       toast.error(error.response?.data?.error || 'Failed to load matches');

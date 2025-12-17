@@ -14,7 +14,7 @@ export default function Feedback() {
 
   const fetchFeedback = async () => {
     try {
-      const response = await axios.get('https://lostify-x7te.onrender.com/api/feedback');
+      const response = await axios.get('https://lostify-sst.onrender.com/feedback');
       setFeedback(response.data);
     } catch (error) {
       toast.error('Failed to load feedback');
@@ -25,7 +25,7 @@ export default function Feedback() {
 
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`https://lostify-x7te.onrender.com/api/feedback/${id}`, { status });
+      await axios.put(`https://lostify-sst.onrender.com/feedback/${id}`, { status });
       toast.success('Status updated successfully');
       fetchFeedback();
     } catch (error) {
@@ -37,7 +37,7 @@ export default function Feedback() {
     if (!confirm('Are you sure you want to delete this feedback?')) return;
     
     try {
-      await axios.delete(`https://lostify-x7te.onrender.com/api/feedback/${id}`);
+      await axios.delete(`https://lostify-sst.onrender.com/feedback/${id}`);
       toast.success('Feedback deleted successfully');
       fetchFeedback();
     } catch (error) {

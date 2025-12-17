@@ -21,7 +21,7 @@ export default function ContactModal({ isOpen, onClose }) {
     setLoading(true);
 
     try {
-      const response = await axios.post('https://lostify-x7te.onrender.com/api/feedback', formData);
+      const response = await axios.post('https://lostify-sst.onrender.com/feedback', formData);
       toast.success(response.data.message || 'Feedback submitted successfully. Thank you!');
       setFormData({ name: '', email: '', subject: '', message: '' });
       onClose();
